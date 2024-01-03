@@ -1,0 +1,29 @@
+
+'''
+
+# Affichage de la page sélectionnée
+if nav1 :
+    st.write("Contenu de la page 2")
+else:
+    resultat = view_data()
+    df = pd.DataFrame(resultat,columns=['ID_patient','Nom_patient','Prenom_patient','Date_naissance_patient','Sexe_patient','Adresse_patient','Telephone_patient','Email_patient'])
+    st.dataframe(df)
+    
+-----
+
+# Création de la barre de navigation
+page = st.sidebar.selectbox("Choisissez une page", pages)
+
+# Navigation entre les pages
+
+if page == "Accueil":
+    st.title("Bienvenue sur la page d'accueil du tableau de bord")
+    resultat = view_patient_data()
+    df = pd.DataFrame(resultat,columns=['ID_patient','Nom_patient','Prenom_patient','Date_naissance_patient','Sexe_patient','Adresse_patient','Telephone_patient','Email_patient'])
+    st.dataframe(df)
+elif page == "Visualisation":
+    st.title("Bienvenue sur la page de visualisation")
+    st.write("Ici, vous pouvez visualiser vos données.")
+elif page == "Prédictions":
+    st.title("Bienvenue sur la page de prédictions")
+    st.write("Ici, vous pouvez faire des prédictions basées sur vos données.")
