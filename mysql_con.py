@@ -6,12 +6,9 @@ conn = mysql.connector.connect(
     port='3306', 
     user ='root', 
     password='',
-    db='luiz_lab'
+    db='salaire'
     )
 
 c = conn.cursor()
 
-def view_patient_data():
-    c.execute('SELECT * FROM patient')
-    data = c.fetchall()
-    return data
+cursor = conn.cursor(prepared = True)

@@ -1,0 +1,127 @@
+'''
+from fonction_analyse import *
+from fonction_echantillon import *
+from fonction_resultat import *
+from fonction_technicien import *
+'''
+'''
+
+page_creat()
+pages = ['Patient','Analyse','Resultat','Technicien','Echantillon']
+page = st.sidebar.selectbox("Choisissez une page", pages)
+
+# Affichage de la page sélectionnée
+if nav1 :
+    st.write("Contenu de la page 2")
+else:
+    resultat = view_data()
+    df = pd.DataFrame(resultat,columns=['ID_patient','Nom_patient','Prenom_patient','Date_naissance_patient','Sexe_patient','Adresse_patient','Telephone_patient','Email_patient'])
+    st.dataframe(df)
+    
+-----
+
+# Création de la barre de navigation
+page = st.sidebar.selectbox("Choisissez une page", pages)
+
+# Navigation entre les pages
+
+if page == "Accueil":
+    st.title("Bienvenue sur la page d'accueil du tableau de bord")
+    resultat = view_patient_data()
+    df = pd.DataFrame(resultat,columns=['ID_patient','Nom_patient','Prenom_patient','Date_naissance_patient','Sexe_patient','Adresse_patient','Telephone_patient','Email_patient'])
+    st.dataframe(df)
+elif page == "Visualisation":
+    st.title("Bienvenue sur la page de visualisation")
+    st.write("Ici, vous pouvez visualiser vos données.")
+elif page == "Prédictions":
+    st.title("Bienvenue sur la page de prédictions")
+    st.write("Ici, vous pouvez faire des prédictions basées sur vos données.")
+
+
+
+----------------------------------------------------------------
+
+prix_analyse = st.sidebar.multiselect(
+    label = 'filtre analyse par Prix',
+    options = df_analyse['Prix'].unique(),
+    default = df_analyse['Prix'].unique(),
+)
+
+gp_sanguin_patient = st.sidebar.multiselect(
+    label = 'filtre par Groupe S.',
+    options = df_patient['Groupe sanguin'].unique(),
+    default = df_patient['Groupe sanguin'].unique(),
+)
+
+genre_technicien = st.sidebar.multiselect(
+    label = 'filtre technicien par genre',
+    options = df_technicien['Sexe'].unique(),
+    default = df_technicien['Sexe'].unique(),
+)
+
+
+
+
+
+
+
+
+from streamlit import metric
+
+resultat_patient = view_data('patient')
+df_patient = pd.DataFrame(resultat_patient, columns = lc_patient)
+
+resultat_analyse = view_data('analyse')
+df_analyse = pd.DataFrame(resultat_analyse,columns = lc_analyse)
+
+resultat_echantillon = view_data('echantillon')
+df_echantillon = pd.DataFrame(resultat_echantillon,columns = lc_echantillon)
+
+resultat_resultat = view_data('resultat')
+df_resultat = pd.DataFrame(resultat_resultat,columns = lc_resultat)
+
+resultat_technicien = view_data('technicien')
+df_technicien = pd.DataFrame(resultat_technicien,columns = lc_technicien)
+	
+# sidebar
+st.sidebar.header('Filtre')
+genre_patient = st.sidebar.multiselect(
+    label = 'filtre patient par genre',
+    options = df_patient['Genre'].unique(),
+    default = df_patient['Genre'].unique(),
+)
+
+gp_sanguin_patient = st.sidebar.multiselect(
+    label = 'filtre par Groupe S.',
+    options = df_patient['GroupeSanguin'].unique(),
+    default = df_patient['GroupeSanguin'].unique(),
+)
+
+
+# process queries
+def_selection = df_patient.query(
+    "Genre ==@genre_patient & GroupeSanguin ==@gp_sanguin_patient"
+)
+
+def metrics():
+    total_patient = def_selection['ID'].sum()
+    nombre_patient = def_selection['ID'].count()
+
+    col1, col2= st.columns(2)
+    with col1:
+        st.info('TOTAL PATIENT', icon ="❤")
+        st.metric(label = "TOTAL PATIENT", value =f"{total_patient:,.0f}",)
+    with col2:
+        st.info('NOMBRE PATIENT', icon ="🌡")
+        st.metric(label = "NOMBRE PATIENT", value =f"{nombre_patient:,.0f}",)
+
+metrics()
+
+
+
+
+
+🎨🎛️💽📱📕⚙️🔗🔩⌨️💻🖥️🎗️
+🥇🥈🥉🏅🎖️📙📉📈📊🗄️📉🗄️
+📊📈📉📇🪪📑📋📂📁🗂️🗃️🌡️
+📃📄🗒️🗓️📆📅📲✅❎♻️✝️🇨🇬
